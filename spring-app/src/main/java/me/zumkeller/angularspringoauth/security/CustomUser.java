@@ -3,7 +3,7 @@ package me.zumkeller.angularspringoauth.security;
 import java.util.Collection;
 
 import lombok.Getter;
-import me.zumkeller.angularspringoauth.User;
+import me.zumkeller.angularspringoauth.users.User;
 import org.springframework.security.core.GrantedAuthority;
 
 @Getter

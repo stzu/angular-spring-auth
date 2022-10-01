@@ -1,4 +1,4 @@
-package me.zumkeller.angularspringoauth;
+package me.zumkeller.angularspringoauth.users;
 
 import static java.util.Collections.emptyList;
 

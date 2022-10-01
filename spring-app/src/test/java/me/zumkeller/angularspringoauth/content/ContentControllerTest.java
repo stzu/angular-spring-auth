@@ -1,28 +1,24 @@
-package me.zumkeller.angularspringoauth;
+package me.zumkeller.angularspringoauth.content;
 
 import static io.restassured.RestAssured.given;
-import static me.zumkeller.angularspringoauth.UserRepository.RETRIEVE_SECRETS;
+import static me.zumkeller.angularspringoauth.users.UserRepository.RETRIEVE_SECRETS;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.emptyArray;
 
 import java.util.stream.Stream;
 
 import io.restassured.specification.RequestSpecification;
+import me.zumkeller.angularspringoauth.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ControllerTest {
+class ContentControllerTest extends IntegrationTest {
 
-    public static final String RESTRICTED = "/restricted";
-    public static final String UNRESTRICTED = "/";
-    @LocalServerPort
-    private int port;
+    public static final String RESTRICTED = "/content/restricted";
+    public static final String UNRESTRICTED = "/content";
 
     @ParameterizedTest
     @MethodSource("securityTestParameters")
@@ -31,19 +27,6 @@ class ControllerTest {
 
         System.out.println(description);
         given(auth).port(port).get(path).then().statusCode(expectedStatus);
-    }
-
-    @Test
-    void test_authorizedUser_hasPermissions() {
-
-        basicAuthUser().port(port).get("/permissions").then().statusCode(200)
-                .body("permissions", contains(RETRIEVE_SECRETS));
-    }
-
-    @Test
-    void test_unauthorizedUser_hasNoPermissions() {
-
-        unauthorizedUser().port(port).get("/permissions").then().statusCode(200).body("permissions", empty());
     }
 
     private static Stream<Arguments> securityTestParameters() {
@@ -62,15 +45,4 @@ class ControllerTest {
                         200));
     }
 
-    private static RequestSpecification anonymousUser() {
-        return given();
-    }
-
-    private static RequestSpecification unauthorizedUser() {
-        return given().auth().basic("basicAuthDummy", "test");
-    }
-
-    private static RequestSpecification basicAuthUser() {
-        return given().auth().basic("basicAuthUser", "test");
-    }
 }

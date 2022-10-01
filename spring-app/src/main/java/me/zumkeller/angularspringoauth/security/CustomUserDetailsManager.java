@@ -3,13 +3,12 @@ package me.zumkeller.angularspringoauth.security;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import me.zumkeller.angularspringoauth.User;
-import me.zumkeller.angularspringoauth.UserRepository;
+import me.zumkeller.angularspringoauth.users.User;
+import me.zumkeller.angularspringoauth.users.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

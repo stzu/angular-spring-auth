@@ -1,4 +1,4 @@
-package me.zumkeller.angularspringoauth;
+package me.zumkeller.angularspringoauth.users;
 
 import java.util.List;
 
