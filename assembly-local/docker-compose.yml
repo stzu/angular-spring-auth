@@ -1,0 +1,11 @@
+services:
+
+  angular-app:
+    build: ..
+    ports:
+      - 4200:80
+
+  spring-app:
+    image: spring-oauth-app
+    ports:
+      - 8080:8080
