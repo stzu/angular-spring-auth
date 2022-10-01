@@ -15,7 +15,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/content/restricted", "/users/**").authenticated() //
                 .anyRequest().permitAll() //
                 .and().httpBasic() //
-                .and().csrf().disable();
+                .and().csrf().disable() //
+                .cors();
     }
 
     @Bean
