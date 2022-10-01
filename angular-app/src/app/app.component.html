@@ -9,7 +9,7 @@
   <div class="spacer"></div>
 
   <a routerLink="/">Welcome</a>
-  <a routerLink="/secrets">Secrets</a>
+  <a routerLink="/secrets" *ngIf="this.secretsEnabled$ | async">Secrets</a>
 
 </div>
 
