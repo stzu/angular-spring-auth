@@ -20,11 +20,11 @@
       </g>
     </svg>
 
-    <span> Hej {{ username }}!</span>
+    <span> Hej {{ username$ | async }}!</span>
 
   </div>
 
-  <h1>{{ content }}</h1>
+  <h1>{{ content$ | async }}</h1>
 
   <h2>Next Steps</h2>
   <p>What do you want to do next with your app?</p>

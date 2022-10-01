@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {Observable} from "rxjs";
 import {AuthService} from "./auth/auth.service";
 
 @Component({
@@ -8,9 +9,10 @@ import {AuthService} from "./auth/auth.service";
 })
 export class AppComponent {
 
-  secretsEnabled$ = this.authService.hasPermission("RETRIEVE_SECRETS");
+  secretsEnabled$: Observable<boolean>;
 
-  constructor(public authService: AuthService) {
+  constructor(private authService: AuthService) {
+    this.secretsEnabled$ = authService.hasPermission('RETRIEVE_SECRETS');
   }
 
 }

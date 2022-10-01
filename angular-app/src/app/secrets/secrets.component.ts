@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../data-model/user";
 import {ContentService} from "../content.service";
 import {AuthService} from "../auth/auth.service";
+import {AsyncSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-secrets',
@@ -10,17 +11,16 @@ import {AuthService} from "../auth/auth.service";
 })
 export class SecretsComponent implements OnInit {
 
-  secret: string;
-  user: User;
+  private secretSubject = new AsyncSubject<string>();
+  secret$ = this.secretSubject.asObservable();
+  user$: Observable<User>;
 
   constructor(private content: ContentService, private auth: AuthService) {
-    this.secret = "";
-    this.user = new User('', []);
+    this.user$ = auth.user$;
   }
 
   ngOnInit(): void {
-    this.content.getSecret().subscribe(response => this.secret = response.content);
-    this.auth.getCurrentUser().subscribe(response => this.user = response);
+    this.content.getSecret().subscribe(response => this.secretSubject.next(response.content));
   }
 
 }
