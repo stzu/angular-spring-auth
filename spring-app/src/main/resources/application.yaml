@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: spring-app-oauth
+  session:
+    store-type: none #disable sessions
+  mvc:
+    throw-exception-if-no-handler-found: "true"
+    servlet:
+      load-on-startup: 1
+  web:
+    resources:
+      add-mappings: false
