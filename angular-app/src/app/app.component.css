@@ -1,3 +1,38 @@
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+}
+
+.toolbar img {
+  margin: 0 16px;
+}
+
+.toolbar a {
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+.toolbar a:last-child {
+  margin-right: 16px;
+}
+
+.toolbar a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.toolbar a:hover {
+  color: #dadada;
+}
+
 svg#rocket {
   width: 80px;
   position: absolute;
