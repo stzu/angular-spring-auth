@@ -639,7 +639,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/redirect_uri"
+        "/redirect_uri",
+        "/"
       ],
       "webOrigins": [
         "*"
