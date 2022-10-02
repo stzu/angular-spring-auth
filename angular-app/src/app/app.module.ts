@@ -5,22 +5,13 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {SecretsComponent} from './secrets/secrets.component';
-import {HttpClientModule} from '@angular/common/http';
-import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
-import {authConfig} from "./auth/auth.config";
-import {JwksValidationHandler} from "angular-oauth2-oidc-jwks";
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthService} from "./auth/auth.service";
+import {Observable} from "rxjs";
+import {AuthorizationInterceptor} from "./auth/auth.interceptor";
 
-function initAuth(oauthService: OAuthService, authService: AuthService): () => Promise<void> {
-  return () => {
-    oauthService.configure(authConfig);
-    oauthService.tokenValidationHandler = new JwksValidationHandler();
-    return oauthService.loadDiscoveryDocumentAndLogin().then(res => {
-        console.log("Login success: " + res);
-        if (res) authService.initUser();
-      }
-    );
-  }
+function initAuth(authService: AuthService): () => Observable<void> {
+  return () => authService.initUser();
 }
 
 @NgModule({
@@ -32,21 +23,14 @@ function initAuth(oauthService: OAuthService, authService: AuthService): () => P
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
-    OAuthModule.forRoot(
-      {
-        resourceServer: {
-          allowedUrls: ['http://localhost:8080'],
-          sendAccessToken: true
-        }
-      }
-    )
+    AppRoutingModule
   ],
   providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true},
     {
       provide: APP_INITIALIZER,
       useFactory: initAuth,
-      deps: [OAuthService, AuthService],
+      deps: [AuthService],
       multi: true
     }
   ],
