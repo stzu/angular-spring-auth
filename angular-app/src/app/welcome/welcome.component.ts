@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ContentService} from "../content.service";
 import {AuthService} from "../auth/auth.service";
-import {AsyncSubject, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Content} from "../data-model/content";
 import {User} from "../data-model/user";
@@ -11,18 +11,14 @@ import {User} from "../data-model/user";
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent {
 
-  private usernameSubject = new AsyncSubject<string>();
-  username$ = this.usernameSubject.asObservable();
+  username$: Observable<string>;
   content$: Observable<string>;
 
   constructor(private contentService: ContentService, private authService: AuthService) {
-    this.content$ = this.contentService.getContent().pipe(map((response: Content) => response.content));
-    this.username$ = authService.user$.pipe(map((user: User) => user.username));
-  }
-
-  ngOnInit(): void {
+    this.content$ = contentService.getContent().pipe(map((response: Content) => response.content));
+    this.username$ = authService.userSubject.pipe(map((user: User) => user.username));
   }
 
 }

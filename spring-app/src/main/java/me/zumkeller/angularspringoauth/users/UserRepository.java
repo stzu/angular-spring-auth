@@ -25,7 +25,7 @@ public class UserRepository {
 
         users.put("basicAuthUser", new User("basicAuthUser", List.of(RETRIEVE_SECRETS)));
         users.put("basicAuthDummy", new User("basicAuthDummy", emptyList()));
-        users.put("stephan", new User("stephan", List.of(RETRIEVE_SECRETS)));
+        users.put("alice", new User("alice", List.of(RETRIEVE_SECRETS)));
         users.put("dummy", new User("dummy", emptyList()));
     }
 

@@ -1,26 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from "../data-model/user";
+import {Component} from '@angular/core';
 import {ContentService} from "../content.service";
 import {AuthService} from "../auth/auth.service";
-import {AsyncSubject, Observable} from "rxjs";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
+import {User} from "../data-model/user";
 
 @Component({
   selector: 'app-secrets',
   templateUrl: './secrets.component.html',
   styleUrls: ['./secrets.component.css']
 })
-export class SecretsComponent implements OnInit {
+export class SecretsComponent {
 
-  private secretSubject = new AsyncSubject<string>();
-  secret$ = this.secretSubject.asObservable();
-  user$: Observable<User>;
+  secret$: Observable<string>;
+  username$: Observable<string>;
+  permissions$: Observable<string[]>;
 
-  constructor(private content: ContentService, private auth: AuthService) {
-    this.user$ = auth.user$;
-  }
-
-  ngOnInit(): void {
-    this.content.getSecret().subscribe(response => this.secretSubject.next(response.content));
+  constructor(private content: ContentService, private authService: AuthService) {
+    this.secret$ = content.getSecret().pipe(map(response => response.content));
+    this.username$ = authService.userSubject.pipe(map((user: User) => user.username));
+    this.permissions$ = authService.userSubject.pipe(map(user => user.permissions));
   }
 
 }

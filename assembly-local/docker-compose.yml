@@ -9,3 +9,18 @@ services:
     image: spring-oauth-app
     ports:
       - 8080:8080
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - 9090:8080
+    volumes:
+      - type: bind
+        source: ./keycloak/oauth-demo-realm-realm.json
+        target: /opt/keycloak/data/import/oauth-demo-realm-realm.json
+        # Imports the realm "oauth-demo-realm" with a user "alice" and password "test"
+    command:
+      - start-dev --import-realm

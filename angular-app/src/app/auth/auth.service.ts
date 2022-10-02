@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AsyncSubject, Observable} from "rxjs";
+import {Observable, ReplaySubject} from "rxjs";
 import {User} from "../data-model/user";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
@@ -13,10 +13,7 @@ export class AuthService {
 
   private usersBase = environment.backend + '/users';
 
-  private userSubject = new AsyncSubject<User>();
-  user$ = this.userSubject.asObservable();
-  private permissionsSubject = new AsyncSubject<string[]>();
-  permissions$ = this.permissionsSubject.asObservable();
+  userSubject = new ReplaySubject<User>(1);
 
   constructor(private http: HttpClient, private oauthService: OAuthService) {
   }
@@ -25,10 +22,8 @@ export class AuthService {
     let claims = this.oauthService.getIdentityClaims() as JWT;
     this.getUser(claims.preferred_username).subscribe(user => {
       this.userSubject.next(user);
-      this.permissionsSubject.next(user.permissions)
     })
   }
-
 
   getUser(username: string): Observable<User> {
 
@@ -37,8 +32,8 @@ export class AuthService {
 
   hasPermission(reqPermission: string): Observable<boolean> {
 
-    return this.permissions$.pipe(map(
-      permissions => permissions.some(permission => permission === reqPermission)
+    return this.userSubject.pipe(map(
+      user => user.permissions.some(permission => permission === reqPermission)
     ));
   }
 }
