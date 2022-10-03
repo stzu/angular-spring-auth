@@ -14,6 +14,8 @@ class BearerTokenRequestMatcher implements RequestMatcher {
     @Override
     public boolean matches(final HttpServletRequest request) {
         try {
+            //     HeaderBearerTokenResolver instead of DefaultBearerTokenResolver
+            // TODO READ bearer token from different header (e.g. oidc_access_token)
             return this.bearerTokenResolver.resolve(request) != null;
         } catch (final OAuth2AuthenticationException ex) {
             return false;

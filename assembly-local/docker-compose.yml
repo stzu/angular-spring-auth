@@ -13,6 +13,8 @@ services:
 
   spring-app:
     image: spring-oauth-app
+#    environment:
+#      - SERVER_MAXHTTPHEADERSIZE=10MB
     ports:
       - 8080:8080
 

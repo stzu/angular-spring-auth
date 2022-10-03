@@ -5,10 +5,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {SecretsComponent} from './secrets/secrets.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from "./auth/auth.service";
 import {Observable} from "rxjs";
-import {AuthorizationInterceptor} from "./auth/auth.interceptor";
 
 function initAuth(authService: AuthService): () => Observable<void> {
   return () => authService.initUser();
@@ -26,7 +25,6 @@ function initAuth(authService: AuthService): () => Observable<void> {
     AppRoutingModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true},
     {
       provide: APP_INITIALIZER,
       useFactory: initAuth,

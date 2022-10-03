@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {concatAll, Observable, ReplaySubject} from "rxjs";
 import {User} from "../data-model/user";
-import {HttpBackend, HttpClient} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {map} from "rxjs/operators";
 
@@ -11,11 +11,8 @@ import {map} from "rxjs/operators";
 export class AuthService {
 
   userSubject = new ReplaySubject<User>(1);
-  private http: HttpClient;
 
-  constructor(private httpBackend: HttpBackend) {
-    // custom HttpClient without interceptors need to retrieve access_token from OpenID Connect Provider (e.g. keycloak)
-    this.http = new HttpClient(httpBackend);
+  constructor(private http: HttpClient) {
   }
 
   initUser(): Observable<void> {
@@ -23,10 +20,7 @@ export class AuthService {
     return this.http.get<OauthInfo>("http://localhost:4200/redirect_uri?info=json").pipe(
       map(
         sessionInfo => {
-          environment.access_token = sessionInfo.access_token;
-          // this.usernameSubject.next(info.id_token.preferred_username);
-          let httpOptions = {headers: {'Authorization': 'Bearer ' + sessionInfo.access_token}};
-          return this.http.get<User>(environment.backend + '/users/' + sessionInfo.id_token.preferred_username, httpOptions)
+          return this.http.get<User>(environment.backend + '/users/' + sessionInfo.id_token.preferred_username)
             .pipe(map(user => this.userSubject.next(user)))
         }
       ), concatAll());
