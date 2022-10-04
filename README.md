@@ -53,6 +53,7 @@ There is a different branch for each approach, in which the components are servi
       <ul>
         <li>Implicit flow in Angular SPA is deprecated and considered insecure</li>
         <li>Angular app is shown for a split-second before forwarding to login page</li>
+        <li>access_token is read by the Angular client</li>
       </ul>
     </td>
   </tr>
@@ -89,6 +90,7 @@ There is a different branch for each approach, in which the components are servi
     <td>
       <ul>
         <li>Apache holds session information (could be stored client-side to enable clustered Apache)</li>
+        <li>access_token is read by the Angular client</li>
       </ul>
     </td>
   </tr>
@@ -120,7 +122,7 @@ There is a different branch for each approach, in which the components are servi
       <ul>
         <li>Apache handles the OAuth flow</li>
         <li>Implicit or Authenticate Code flows can be used</li>
-        <li>No authentication handling at all necessary in Angular app</li>
+        <li>access_token is not read by the Angular client</li>
       </ul>
     </td>
     <td>
